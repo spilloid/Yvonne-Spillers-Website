@@ -1,0 +1,23 @@
+/* global require:false */
+require([
+	'jquery',
+	'underscore',
+	'tracking/trackingHub',
+	// non-arg requirements
+	'tracking/googleAnalyticsSender',
+	'internal/sitebuilder/view/view.app'
+], function($, _, trackingHub) {
+	'use strict';
+
+	function trackPreviewPageLoaded() {
+		window._performanceLabels = window._performanceLabels || [];
+		trackingHub.track('trackTiming', {
+			category: 'preview_load',
+			variable: 'preview_dom_ready',
+			label: _.uniq(window._performanceLabels).sort().join(','),
+			upperBound: 3600000
+		});
+	}
+
+	$(document).ready(trackPreviewPageLoaded);
+});

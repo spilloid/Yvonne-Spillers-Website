@@ -1,0 +1,55 @@
+/* global define:false */
+define([
+	'tracking/trackingHub'
+], function(trackingHub) {
+	'use strict';
+
+	var _gaq = window._gaq = window._gaq || [];
+
+	function init() {
+		_gaq.push(['_setAccount', 'UA-33130564-1']);
+		_gaq.push(['_setDomainName', '.webs.com']);
+		_gaq.push(['_setAllowLinker', true]);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') +
+			'.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	}
+
+	var track = {
+		'pageView': function(data) {
+			_gaq.push(['_trackPageview', data.url]);
+		},
+		// these formats are not finalized: asked Dave
+		'click': function(data) {
+			_gaq.push(['_trackEvent', data.name, 'click']);
+		},
+		'impression': function(data) {
+			_gaq.push(['_trackEvent', data.name, 'impression']);
+		},
+		'campaign': function(data) {
+			_gaq.push(['_trackEvent', data.medium, data.campaign, data.content + '-' + data.source]);
+		},
+		'trackTiming': function(data) {
+			if(window.performance && window.performance.timing && window.performance.timing.connectStart) {
+				var timeSinceConnect = (new Date()).valueOf() - window.performance.timing.connectStart;
+				if(isFinite(timeSinceConnect) && 0 < timeSinceConnect &&
+					(!data.hasOwnProperty('upperBound') || timeSinceConnect < data.upperBound)) {
+					_gaq.push(['_trackTiming', data.category, data.variable, timeSinceConnect, data.label, 10]);
+				}
+			}
+		}
+	};
+
+	trackingHub.on('all', function(eventName, data) {
+		if(eventName in track) {
+			track[eventName].call(null, data);
+		}
+	});
+
+	init();
+
+});

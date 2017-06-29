@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)http://members.webs.com/s/sitebuilder/pages/259716765/compare -->
+<html class=" js canvas rgba borderradius boxshadow textshadow opacity cssanimations cssgradients csstransitions"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>
+		Webs - Preview</title>
+
+<link rel="shortcut icon" href="http://members.webs.com/websfavicon.ico" type="image/x-icon">
+<link rel="icon" href="http://members.webs.com/websfavicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="./Webs - Preview_files/base.css">
+	<link rel="stylesheet" type="text/css" href="./Webs - Preview_files/base(1).css">
+<link rel="stylesheet" type="text/css" href="./Webs - Preview_files/ui.css">
+
+</head><body><content tag="css">
+	<link rel="stylesheet" href="./Webs - Preview_files/sb3Branding.css">
+</content>
+
+<style>
+	#preview { width: 100%; }
+	#viewing_label span { line-height: 22px; color: #a1a1a1; font-weight: bold; }
+	#view_label { cursor: default; }
+
+	#btn_close { height: 18px; margin-top: 1px; margin-left: 6px; }
+	#btn_close > span { height: 17px; }
+	#btn_close > span:before { height: 18px; }
+	.view_frame { display: none; }
+	.view_frame.active { display: block; }
+
+	.global-header.disabled { display: none; }
+
+	.header-nav { float: right; margin-top: 2px !important;}
+	#container { padding-top: 59px; }
+	#container.reset { padding-top: 0px; }
+
+	body { overflow-y: hidden; -ms-overflow-y: hidden;}
+</style>
+
+<script>
+	//Used for mixpanel tracking below.
+	if(typeof(window.mpq) === 'undefined') window.mpq = [['init', '58fa82747b4c3f4992b74583e70b8940']];
+	window.force_mpq = true;
+</script>
+
+<script src="./Webs - Preview_files/modernizr-old.js.download"></script>
+<script src="./Webs - Preview_files/require.js.download"></script>
+<script src="./Webs - Preview_files/jquery.min.js.download"></script>
+
+
+<header class="global-header group" id="headerCompare">
+	<a class="logo" href="http://members.webs.com/sites/"><h1>Webs</h1></a>
+
+	<ul class="header-nav">
+		<li>
+			<label id="viewing_label" class="w-btn2-text disabled">
+				<span>You are currently viewing:</span>
+			</label>
+		</li>
+		<li>
+			<label id="view_label" class="w-btn2 w-btn2 active"><span>Preview Version</span></label>
+				</li>
+		<li>
+			<a id="btn_close" class="w-btn2 w-btn2-icon w-btn2-red w-btn-icon w-icon-xsmall"><span>Close</span></a>
+		</li>
+	</ul>
+</header>
+
+<div id="container" class="loading" style="height: 816px;">
+	<iframe id="preview" class="view_frame active" src="./Webs - Preview_files/preview.html" style="height: 816px;"></iframe>
+	</div>
+
+<script>
+(function($) {
+	var $window = $(window);
+	var $container = $("#container")
+	var $previewFrame = $("#preview");
+	var $publishedFrame = $("#published");
+	var $header = $("#headerCompare");
+	var remainingHeight = $header.height();
+	var fixHeight = function() {
+		var height = $window.height() - remainingHeight;
+		$previewFrame.height(height);
+		$publishedFrame.height(height);
+		$container.height(height);
+	};
+
+	$window.resize(fixHeight);
+	fixHeight();
+
+	// Preview/Published toggles
+	var $previewButton = $("#view_preview").click(function() {
+		$previewButton.addClass("active disabled"); $publishedButton.removeClass("active disabled");
+		$previewFrame.addClass("active"); $publishedFrame.removeClass("active");
+	});
+	var $publishedButton = $("#view_published").click(function() {
+		$publishedButton.addClass("active disabled"); $previewButton.removeClass("active disabled");
+		$publishedFrame.addClass("active"); $previewFrame.removeClass("active");
+	});
+
+	$("#btn_close").click(function() {
+		window.close();
+		// Or do this instead to hide the header
+		//remainingHeight = 0;
+		//$header.addClass("disabled");
+		//$("#container").addClass("reset");
+		//fixHeight();
+	});
+
+	// Removes the extra padding accounted for in edit mode
+	$previewFrame.load(function(){
+		$previewFrame.contents().find("html")
+			.css("padding-bottom",0)
+			.find("body").delegate("#webs-nav a", "click", function() {
+				parent.location = this.href;
+			});
+	});
+
+	$publishedFrame.load(function() {
+		$publishedFrame.contents().find("body").delegate("#webs-nav a", "click", function() {
+			parent.location = this.href;
+		});
+	});
+})(jQuery);
+</script>
+
+
+
+</body></html>

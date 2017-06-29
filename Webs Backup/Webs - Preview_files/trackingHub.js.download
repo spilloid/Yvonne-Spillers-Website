@@ -1,0 +1,26 @@
+define([
+	'underscore',
+	'backbone'
+], function(_, Backbone) {
+	var trackingHub = _.extend({
+		track: function(eventType, data) {
+			if(data.url) {
+				data.url = this.sanitizeUrl(data.url);
+			}
+			this.trigger(eventType, data);
+		},
+
+		parsePathname: function(url) {
+			var l = document.createElement('a');
+			l.href = url;
+			return l.pathname;
+		},
+
+		sanitizeUrl: function(url) {
+			var pathname = this.parsePathname(url);
+			return pathname.replace(/\/\d+/, '');
+		}
+	}, Backbone.Events);
+
+	return trackingHub;
+});
