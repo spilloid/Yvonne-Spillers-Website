@@ -1,4 +1,6 @@
-
+Below are the credits from the template
+--------------
+Credits where credits are due:
 TITLE: 
 Union - Multi-Purpose One Page Responsive Free HTML5 template
 
